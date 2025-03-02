@@ -1,27 +1,23 @@
+// theme.ts
 import { createTheme } from "@mui/material/styles";
 
 export const theme = createTheme({
   palette: {
     primary: {
-      main: "#007a5a", // Main brand color (Green)
-      contrastText: "#ffffff",
+      main: "#8d6e63", // SaddleBrown – główny odcień brązu
+      light: "#ffffff63", // RosyBrown – jasny odcień brązu
     },
     secondary: {
-      main: "#3f0e40", // Sidebar color (Dark Purple)
-      contrastText: "#ffffff",
+      main: "#D7CCC8", // DarkOliveGreen – ziemisty odcień zieleni
     },
     background: {
-      default: "#f8f8f8", // Light gray background
-      paper: "#ffffff",
-    },
-    text: {
-      primary: "#333333", // Dark text for readability
-      secondary: "#555555",
+      default: "#efebe982", // Beige – delikatny beż jako tło całej aplikacji
+      paper: "#EFEBE9", // Cornsilk – jasny odcień dla elementów typu "paper" (np. panele, karty)
     },
   },
+
   typography: {
-    fontFamily: "'Roboto', sans-serif",
+    fontFamily: "Inter, system-ui, Avenir, Helvetica, Arial, sans-serif",
+    fontWeightBold: 700,
   },
 });
-
-export type ThemeType = typeof theme;

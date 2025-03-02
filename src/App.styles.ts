@@ -2,32 +2,14 @@ import styled from "styled-components";
 
 export const AppContainer = styled.div`
   display: flex;
+  flex-direction: column;
   height: 100vh;
+  width: 100vw;
 `;
 
-export const SidebarContainer = styled.div`
-  width: 250px;
-  background-color: ${({ theme }) => theme.palette.secondary.main};
-  color: ${({ theme }) => theme.palette.text.primary};
-  padding: 20px;
-  overflow-y: auto;
-  height: 100vh;
-  position: fixed;
-  top: 64px;
-  left: 0;
-  z-index: 1000;
-`;
-
-export const ChatContainer = styled.div`
+export const MainContent = styled.main`
   flex: 1;
-  margin-left: 250px;
-  padding-top: 64px; /* Height of the AppBar */
+  padding: 1rem;
   overflow-y: auto;
-`;
-
-export const AppBarContainer = styled.div`
-  flex-grow: 1;
-  .MuiAppBar-root {
-    z-index: 1100;
-  }
+  background-color: ${({ theme }) => theme.palette.background.default};
 `;

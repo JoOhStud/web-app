@@ -1,3 +1,4 @@
+import { ProfileData } from "../features/user/userApi";
 import { User } from "./types";
 
 export interface ChatMessage {
@@ -10,5 +11,7 @@ export interface ChatMessage {
 export interface Chat {
   id: string;
   participants: User[];
+  partner: ProfileData | null;
   name: string;
+  avatar: string;
 }

@@ -1,3 +1,5 @@
+import { ProfileData } from "../features/user/userApi";
+
 export type Channel = {
   id: number;
   name: string;
@@ -12,12 +14,25 @@ export type Message = {
 
 export type User = {
   id: string;
-  email: string;
-  role: Role;
-  username: string;
+  role: Role | null;
+  token: string | null;
+  profile: ProfileData;
 };
 
 export enum Role {
   Behaviorist = "behaviorist",
-  PetOwner = "petOwner",
+  PetOwner = "pet_owner",
+}
+
+export enum SearchType {
+  user = "user",
+  post = "post",
+}
+
+export interface SearchHit {
+  id: string;
+  name: string;
+  description: string;
+  type: SearchType;
+  location: string;
 }

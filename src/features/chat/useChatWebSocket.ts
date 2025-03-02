@@ -1,8 +1,11 @@
 import { useState, useEffect, useRef } from "react";
 import { ChatMessage } from "../../types/Chat.types";
 import { useAuth } from "react-oidc-context";
+import { useDispatch } from "react-redux";
+import { chatApi } from "./chatApi";
 
 export const useChatWebSocket = (chatId: string) => {
+  const dispatch = useDispatch();
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const wsRef = useRef<WebSocket | null>(null);
   const token = useAuth().user?.access_token;
@@ -50,6 +53,9 @@ export const useChatWebSocket = (chatId: string) => {
 
     ws.onclose = () => {
       console.log("WebSocket connection closed");
+      if (chatId) {
+        dispatch(chatApi.util.invalidateTags([{ type: "Chats", id: chatId }]));
+      }
     };
 
     // Cleanup on unmount or chatId change
