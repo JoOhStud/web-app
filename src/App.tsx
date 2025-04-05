@@ -21,13 +21,23 @@ import { Role } from "./types/types";
 import { useSelector } from "react-redux";
 import { RootState } from "./store";
 import AboutTab from "./features/user/components/AboutTab";
-import BlogTab from "./features/user/components/BlogTab";
 import CollaborationTab from "./features/user/components/CollaborationTab";
 import ProfilePage from "./pages/ProfilePage";
 import { setChatOpen } from "./features/chat/chatSlice";
 import Blog from "./pages/Blog";
 import Post from "./pages/Post";
 import PostEditor from "./features/blog/components/PostEditor";
+import BlogList from "./features/blog/components/BlogList";
+import Footer from "./components/layout/Footer";
+import CookiesPage from "./pages/Cookies";
+import PrivacyPolicyPage from "./pages/PrivacyPolicy";
+import TermsPage from "./pages/Terms";
+import CookieBanner from "./components/layout/CookieBanner";
+import PublicPostView from "./features/blog/components/PublicPostView";
+import PublicUserBlog from "./features/blog/components/PublicUserBlog";
+import { ChannelsListPage } from "./pages/Channels";
+import { ChannelDetailsPage } from "./pages/ChannelDetails";
+import { DogPage } from "./pages/DogPage";
 
 const App: React.FC = () => {
   const auth = useAuth();
@@ -83,24 +93,47 @@ const App: React.FC = () => {
             {auth.isAuthenticated && (
               <AppContainer>
                 <Header />
+                <CookieBanner />
                 <MainContent>
                   <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/profile" element={<UserProfile />} />
+                    <Route
+                      path="/oferta"
+                      element={<CollaborationTab isEditing={true} />}
+                    />
+                    <Route path="/wspolprace" element={<ChannelsListPage />} />
+                    <Route
+                      path="/wspolprace/:channelId"
+                      element={<ChannelDetailsPage />}
+                    />
                     <Route path="/blog" element={<Blog />}>
+                      <Route index element={<BlogList />} />
+                      <Route path="drafts" element={<BlogList />} />
                       <Route path="new" element={<PostEditor />} />
                       <Route path="edit/:postId" element={<PostEditor />} />
+                      <Route path="/blog/:postId" element={<Post />} />
                     </Route>
-                    <Route path="/blog/:postId" element={<Post />} />
                     <Route path="/user/:userId" element={<ProfilePage />}>
                       <Route index element={<AboutTab />} />
                       <Route path="about" element={<AboutTab />} />
                       <Route
                         path="collaboration"
-                        element={<CollaborationTab />}
+                        element={<CollaborationTab isEditing={false} />}
                       />
-                      <Route path="blog" element={<BlogTab />} />
+                      <Route path="blog" element={<PublicUserBlog />} />
+                      <Route
+                        path="/user/:userId/blog/:postId"
+                        element={<PublicPostView />}
+                      />
                     </Route>
+                    <Route path="/regulamin" element={<TermsPage />} />
+                    <Route
+                      path="/polityka-prywatnosci"
+                      element={<PrivacyPolicyPage />}
+                    />
+                    <Route path="/cookies" element={<CookiesPage />} />
+                    <Route path="/zwierzaki" element={<DogPage />} />
                   </Routes>
                 </MainContent>
                 {isChatOpen && (
@@ -111,6 +144,7 @@ const App: React.FC = () => {
                     onToggle={() => dispatch(setChatOpen(!isChatOpen))}
                   />
                 )}
+                <Footer />
               </AppContainer>
             )}
           </>

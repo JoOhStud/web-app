@@ -14,12 +14,13 @@ const PostPage: React.FC = () => {
     <Box sx={{ p: 2 }}>
       <Typography variant="h4">{post.title}</Typography>
       <Typography variant="caption" color="text.secondary">
-        Created: {post.created_at?.toString().slice(0, 19).replace("T", " ")}
+        Utworzono: {post.created_at?.toString().slice(0, 19).replace("T", " ")}
       </Typography>
       <br />
       {post.updated_at && (
         <Typography variant="caption" color="text.secondary">
-          Updated: {post.updated_at?.toString().slice(0, 19).replace("T", " ")}
+          Edytowano:{" "}
+          {post.updated_at?.toString().slice(0, 19).replace("T", " ")}
         </Typography>
       )}
       <Typography variant="body2" sx={{ my: 2 }}>
@@ -31,13 +32,9 @@ const PostPage: React.FC = () => {
         sx={{ border: "1px solid #ccc", p: 2 }}
         dangerouslySetInnerHTML={{ __html: post.content }}
       />
-
-      <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-        Published: {post.published ? "Yes" : "No"}
-      </Typography>
       {post.keywords && (
         <Typography variant="body2" color="text.secondary">
-          Keywords: {post.keywords}
+          Słowa kluczowe: {post.keywords}
         </Typography>
       )}
     </Box>

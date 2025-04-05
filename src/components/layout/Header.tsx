@@ -86,15 +86,15 @@ const Header: React.FC = () => {
               <Button color="inherit" onClick={() => navigate("/wspolprace")}>
                 Współprace
               </Button>
-              <Button color="inherit" onClick={() => navigate("/kalendarz")}>
+              {/* <Button color="inherit" onClick={() => navigate("/kalendarz")}>
                 Kalendarz
-              </Button>
+              </Button> */}
             </>
           )}
           {userRole === Role.PetOwner && (
             <>
-              <Button color="inherit" onClick={() => navigate("/dog-profile")}>
-                Dog Profile
+              <Button color="inherit" onClick={() => navigate("/zwierzaki")}>
+                Zwierzaki
               </Button>
               <Button color="inherit" onClick={() => navigate("/wspolprace")}>
                 Współprace

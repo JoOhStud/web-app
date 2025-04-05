@@ -11,6 +11,7 @@ import {
 import { ChatMessage } from "../../../types/Chat.types";
 import { CircularProgress, IconButton } from "@mui/material";
 import { Close as CloseIcon } from "@mui/icons-material";
+import defaultPicture from "../../../assets/dog-paw.svg";
 import {
   ChatContainer,
   ChatContent,
@@ -96,8 +97,8 @@ const ChatComponent: React.FC<ChatProps> = ({ onClose }) => {
                       onClick={() => dispatch(selectChat(chat))}
                     >
                       <Avatar
-                        name="Zoe"
-                        src="https://chatscope.io/storybook/react/assets/zoe-E7ZdmXF0.svg"
+                        name={chat.partner?.username || ""}
+                        src={chat.partner?.picture || defaultPicture}
                       />
                     </Conversation>
                   ))
@@ -118,8 +119,8 @@ const ChatComponent: React.FC<ChatProps> = ({ onClose }) => {
                 />
                 <Avatar
                   key="2"
-                  src="https://chatscope.io/storybook/react/assets/zoe-E7ZdmXF0.svg"
-                  name="Zoe"
+                  src={selectedChat.partner?.picture || defaultPicture}
+                  name={selectedChat.partner?.username}
                 />
                 <ConversationHeader.Content
                   key="3"

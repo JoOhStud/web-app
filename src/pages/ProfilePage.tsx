@@ -47,7 +47,7 @@ function ProfilePage() {
     currentTab = 0;
   } else if (location.pathname.endsWith("collaboration")) {
     currentTab = 1;
-  } else if (location.pathname.endsWith("blog")) {
+  } else if (location.pathname.includes("blog")) {
     currentTab = 2;
   }
 
@@ -61,8 +61,7 @@ function ProfilePage() {
       <Box display="flex" alignItems="center" gap={2} mb={3}>
         <Avatar
           alt={userData.username || ""}
-          // Jeśli masz zdjęcie w userData.picture, podstaw je tutaj:
-          // src={userData.picture}
+          src={userData.picture}
           sx={{ width: 64, height: 64 }}
         />
         <Box>

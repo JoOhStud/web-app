@@ -1,10 +1,19 @@
 import { useEffect, useRef, useState } from "react";
-import { Box, InputAdornment, List, ListItemButton } from "@mui/material";
+import {
+  Box,
+  InputAdornment,
+  List,
+  ListItem,
+  ListItemButton,
+  Typography,
+} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import { SearchHit } from "../../../types/types";
 import { SearchField } from "./Search.styles";
 import { useNavigate } from "react-router";
-import { useSearchUsersQuery } from "../searchApi";
+import { useSearchPostsQuery, useSearchUsersQuery } from "../searchApi";
+import { Post } from "../../blog/blogApi";
+
+const MAX_RESULTS = 10;
 
 const Search = () => {
   const navigate = useNavigate();
@@ -13,7 +22,10 @@ const Search = () => {
   const [debouncedTerm, setDebouncedTerm] = useState("");
   const searchWrapperRef = useRef<HTMLDivElement | null>(null);
 
-  const { data: searchResults = [] } = useSearchUsersQuery(debouncedTerm, {
+  const { data: usersData = [] } = useSearchUsersQuery(debouncedTerm, {
+    skip: !debouncedTerm,
+  });
+  const { data: postsData = [] } = useSearchPostsQuery(debouncedTerm, {
     skip: !debouncedTerm,
   });
 
@@ -23,10 +35,17 @@ const Search = () => {
     setSearchResultsVisible(value.length > 1);
   };
 
-  const handleResultClick = (userId: string) => {
-    setSearchResultsVisible(false);
+  // Kliknięcie w wynik: rozróżniamy usera / posta
+  const handleUserClick = (userId: string) => {
     setSearchTerm("");
+    setSearchResultsVisible(false);
     navigate(`/user/${userId}`);
+  };
+
+  const handlePostClick = (post: Post) => {
+    setSearchTerm("");
+    setSearchResultsVisible(false);
+    navigate(`/user/${post.author_id}/blog/${post.id}`);
   };
 
   useEffect(() => {
@@ -68,32 +87,70 @@ const Search = () => {
           ),
         }}
       />
-      {searchResultsVisible && searchResults.length > 0 && (
-        <Box
-          sx={{
-            position: "absolute",
-            top: "40px",
-            left: "1rem",
-            width: "100%",
-            background: "white",
-            boxShadow: "0px 4px 6px rgba(0,0,0,0.1)",
-            borderRadius: "4px",
-            zIndex: 9999,
-          }}
-        >
-          <List>
-            {searchResults.map((result: SearchHit) => (
-              <ListItemButton
-                key={result.id}
-                onClick={() => handleResultClick(result.id)}
-                style={{ color: "black" }}
-              >
-                {result.name}
-              </ListItemButton>
-            ))}
-          </List>
-        </Box>
-      )}
+      {searchResultsVisible &&
+        (usersData.length > 0 || postsData.length > 0) && (
+          <Box
+            sx={{
+              position: "absolute",
+              top: "40px",
+              left: 0,
+              width: "100%",
+              background: "white",
+              boxShadow: "0px 4px 6px rgba(0,0,0,0.1)",
+              borderRadius: "4px",
+              zIndex: 9999,
+              p: 1,
+            }}
+          >
+            {/* Lista użytkowników */}
+            {usersData.length > 0 && (
+              <>
+                <Typography
+                  variant="subtitle2"
+                  sx={{ ml: 1, mt: 1, color: "black" }}
+                >
+                  Użytkownicy
+                </Typography>
+                <List>
+                  {usersData.map((user) => (
+                    <ListItem key={user.id} disablePadding>
+                      <ListItemButton
+                        onClick={() => handleUserClick(user.id)}
+                        sx={{ color: "black" }}
+                      >
+                        {user.name}
+                      </ListItemButton>
+                    </ListItem>
+                  ))}
+                </List>
+              </>
+            )}
+
+            {/* Lista postów */}
+            {postsData.length > 0 && (
+              <>
+                <Typography
+                  variant="subtitle2"
+                  sx={{ ml: 1, mt: 1, color: "black" }}
+                >
+                  Posty
+                </Typography>
+                <List>
+                  {postsData.map((post) => (
+                    <ListItem key={post.id} disablePadding>
+                      <ListItemButton
+                        onClick={() => handlePostClick(post)}
+                        sx={{ color: "black" }}
+                      >
+                        {post.title}
+                      </ListItemButton>
+                    </ListItem>
+                  ))}
+                </List>
+              </>
+            )}
+          </Box>
+        )}
     </Box>
   );
 };

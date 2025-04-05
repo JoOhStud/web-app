@@ -10,6 +10,7 @@ export interface ProfileData {
   lastName?: string;
   username?: string;
   description?: string;
+  picture?: string;
   about_me?: string;
   // location?: string;    // jeśli chcesz pobierać location
   specializations?: string[];
@@ -18,7 +19,7 @@ export interface ProfileData {
 // Typ payloadu do aktualizacji usera
 export interface UpdateUserPayload {
   user_id: string;
-  data: ProfileData;
+  data: Partial<ProfileData>;
 }
 
 export const userApi = createApi({
@@ -36,13 +37,25 @@ export const userApi = createApi({
     updateUser: builder.mutation<ProfileData, UpdateUserPayload>({
       query: ({ user_id, data }) => ({
         url: `users/users/${user_id}`,
-        method: "PUT",
+        method: "PATCH",
         body: data,
       }),
       invalidatesTags: ["CurrentUser"],
     }),
     searchUsers: builder.query<SearchHit[], string>({
       query: (query) => `users/search?query=${encodeURIComponent(query)}`,
+    }),
+    uploadProfilePicture: builder.mutation({
+      query: (file) => {
+        const formData = new FormData();
+        formData.append("file", file);
+        return {
+          url: "/users/users/current/picture",
+          method: "POST",
+          body: formData,
+        };
+      },
+      invalidatesTags: ["CurrentUser"],
     }),
   }),
 });
@@ -51,4 +64,5 @@ export const {
   useGetCurrentUserQuery,
   useGetUserByIdQuery,
   useUpdateUserMutation,
+  useUploadProfilePictureMutation,
 } = userApi;
